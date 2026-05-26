@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap Relay — Help</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-dim: #1f6feb33;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0 20px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  header p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+    color: var(--accent);
+  }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+  p, li { font-size: 15px; margin-bottom: 12px; }
+  ul, ol { padding-left: 20px; margin-bottom: 16px; }
+  li { margin-bottom: 6px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  .step-grid {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0 16px;
+    margin: 16px 0;
+  }
+  .step-num {
+    width: 36px;
+    height: 36px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    margin-top: 2px;
+  }
+  .step-body { padding-bottom: 16px; }
+  .step-body:last-child { padding-bottom: 0; }
+  .status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .status-green { background: var(--green); }
+  .status-yellow { background: var(--yellow); }
+  .status-red { background: var(--red); }
+  .badge {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+  summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    list-style: none;
+  }
+  summary::before {
+    content: "+";
+    display: inline-block;
+    width: 20px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  details[open] summary::before { content: "\2212"; }
+  details > div { padding: 0 20px 16px; }
+  code {
+    background: var(--accent-dim);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>User Help</h1>
+  <p>Tap Relay &mdash; Getting started and troubleshooting</p>
+</header>
+
+<h2>What is Tap Relay?</h2>
+<p>Tap Relay turns your Flic 2 Bluetooth button into a one-tap webhook trigger. Press the button, and the app instantly fires an HTTPS POST to the endpoint you configure. No hub needed &mdash; just your iPhone and a cell signal.</p>
+
+<h2>Getting Started</h2>
+
+<div class="step-grid">
+  <div><div class="step-num">1</div></div>
+  <div class="step-body">
+    <h3>Get a Flic 2 Button</h3>
+    <p>You'll need a <a href="https://flic.io">Flic 2</a> Bluetooth button. Tap Relay does not work with the original Flic 1.</p>
+  </div>
+
+  <div><div class="step-num">2</div></div>
+  <div class="step-body">
+    <h3>Scan Your QR Code</h3>
+    <p>Your service provider or admin will give you a QR code containing your webhook configuration. Tap <strong>Scan QR</strong> on the dashboard to scan it. This sets up your webhook URL, credentials, and button pairing in one step.</p>
+  </div>
+
+  <div><div class="step-num">3</div></div>
+  <div class="step-body">
+    <h3>Pair Your Button</h3>
+    <p>After scanning, tap <strong>Pair Button</strong>. Press and hold your Flic button for 6 seconds until the LED blinks. The app will discover and connect to it.</p>
+  </div>
+
+  <div><div class="step-num">4</div></div>
+  <div class="step-body">
+    <h3>Test It</h3>
+    <p>Once connected, tap <strong>Send Test</strong> on the dashboard. You should see a delivery confirmation in the event log. You're all set.</p>
+  </div>
+</div>
+
+<h2>Understanding the Dashboard</h2>
+
+<div class="card">
+  <h3>Connection Status</h3>
+  <p>
+    <span class="status status-green"></span><strong>Connected</strong> &mdash; Button is paired and active<br>
+    <span class="status status-yellow"></span><strong>Searching</strong> &mdash; Looking for your button (stay within ~15 feet)<br>
+    <span class="status status-red"></span><strong>Disconnected</strong> &mdash; Button not found; tap Reconnect
+  </p>
+</div>
+
+<div class="card">
+  <h3>Event Log</h3>
+  <p>Shows your recent button presses with timestamps and delivery status. Each entry includes the click type (single, double, or hold) and whether the webhook was delivered successfully.</p>
+</div>
+
+<h2>Click Types</h2>
+<p>Your Flic button supports three actions, each sent as a different event to your webhook:</p>
+<ul>
+  <li><strong>Single click</strong> &mdash; one quick press</li>
+  <li><strong>Double click</strong> &mdash; two quick presses</li>
+  <li><strong>Hold</strong> &mdash; press and hold for 1+ second</li>
+</ul>
+
+<h2>Manual Setup</h2>
+<p>If you don't have a QR code, you can configure the webhook manually:</p>
+<ol>
+  <li>Go to <strong>Settings</strong> in the app</li>
+  <li>Enter your webhook URL (must be HTTPS)</li>
+  <li>Enter your auth token and client ID</li>
+  <li>Tap <strong>Save</strong></li>
+</ol>
+
+<h2>Troubleshooting</h2>
+
+<details>
+  <summary>Button won't pair</summary>
+  <div>
+    <ul>
+      <li>Make sure Bluetooth is enabled in iOS Settings</li>
+      <li>Hold the Flic button for 8+ seconds to factory reset it, then try again</li>
+      <li>Ensure the button isn't connected to another phone or the official Flic app</li>
+      <li>Stay within 3 feet during initial pairing</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Webhook not delivering</summary>
+  <div>
+    <ul>
+      <li>Check that your URL starts with <code>https://</code></li>
+      <li>Verify your auth token and client ID are correct in Settings</li>
+      <li>Make sure you have cellular or Wi-Fi connectivity</li>
+      <li>Try the <strong>Send Test</strong> button to isolate the issue</li>
+      <li>Check the event log &mdash; entries without a delivery timestamp indicate failed sends</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>Button disconnects frequently</summary>
+  <div>
+    <ul>
+      <li>Flic 2 range is ~60 feet in open air, less through walls</li>
+      <li>Keep your iPhone within reasonable range of the button</li>
+      <li>The app will auto-reconnect when the button comes back in range</li>
+      <li>Avoid force-quitting the app &mdash; it needs to run in the background for Bluetooth</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>App not responding in background</summary>
+  <div>
+    <ul>
+      <li>Do not force-quit Tap Relay from the app switcher</li>
+      <li>Disable <strong>Low Power Mode</strong> for best reliability</li>
+      <li>Go to iOS Settings &gt; Tap Relay and ensure Bluetooth is allowed</li>
+      <li>The app uses Core Bluetooth State Restoration to persist connections even after iOS suspends it</li>
+    </ul>
+  </div>
+</details>
+
+<details>
+  <summary>How to clear my data</summary>
+  <div>
+    <p>Go to <strong>Settings</strong> in the app and tap <strong>Clear All Data</strong>. This removes your webhook credentials from Keychain and deletes all event history. Your button will also be unpaired.</p>
+  </div>
+</details>
+
+<h2>Contact Support</h2>
+<p>Need more help? Email us at <a href="mailto:support@taprelay.app">support@taprelay.app</a>.</p>
+
+<footer>
+  &copy; 2026 Tap Relay. All rights reserved.
+</footer>
+
+</body>
+</html>

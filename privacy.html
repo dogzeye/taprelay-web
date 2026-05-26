@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap Relay — Privacy Policy</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-dim: #1f6feb33;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0 20px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+    color: var(--accent);
+  }
+  p, li {
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  ul {
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+  li { margin-bottom: 6px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Privacy Policy</h1>
+  <p>Tap Relay &mdash; Last updated May 26, 2026</p>
+</header>
+
+<div class="card">
+  <span class="badge">TL;DR</span>
+  <p style="margin-bottom:0;">Tap Relay processes button presses locally on your device and forwards them to the webhook URL you configure. We do not collect, store, or sell your personal data.</p>
+</div>
+
+<h2>1. Information We Collect</h2>
+<p>Tap Relay is designed to operate with minimal data. Here is exactly what the app handles:</p>
+<ul>
+  <li><strong>Button press events</strong> &mdash; timestamp, click type (single, double, hold), and delivery status. Stored on-device only via SwiftData.</li>
+  <li><strong>Webhook credentials</strong> &mdash; the URL, authentication token, and client ID you provide (via QR scan or manual entry). Stored in the iOS Keychain on your device.</li>
+  <li><strong>Bluetooth data</strong> &mdash; Flic 2 button MAC address and connection state, managed by the Flic SDK locally.</li>
+</ul>
+
+<h2>2. Information We Do Not Collect</h2>
+<ul>
+  <li>No names, email addresses, or account information</li>
+  <li>No location data</li>
+  <li>No advertising identifiers or tracking</li>
+  <li>No analytics or telemetry services</li>
+  <li>No data shared with third parties</li>
+</ul>
+
+<h2>3. How Data Flows</h2>
+<p>When you press your Flic button, the app constructs a JSON payload and sends it via HTTPS POST to the webhook URL you configured. The payload contains:</p>
+<ul>
+  <li>Client ID and auth token (from your provisioning)</li>
+  <li>Button MAC address</li>
+  <li>Click type, press timestamp, delivery timestamp, and queue age</li>
+</ul>
+<p>This data goes directly from your device to your webhook endpoint. It does not pass through any servers we operate.</p>
+
+<h2>4. On-Device Storage</h2>
+<p>Button event history is stored locally using SwiftData and is never uploaded. Credentials are stored in the iOS Keychain with <code>afterFirstUnlock</code> accessibility to support background operation. You can clear all stored data from the Settings screen in the app.</p>
+
+<h2>5. Bluetooth &amp; Camera Permissions</h2>
+<p><strong>Bluetooth</strong> is required to communicate with your Flic 2 button. The app uses Core Bluetooth state restoration to maintain the connection in the background.</p>
+<p><strong>Camera</strong> is used only for scanning QR codes during provisioning. No images or video are stored or transmitted.</p>
+
+<h2>6. Third-Party SDKs</h2>
+<p>The app includes the <a href="https://flic.io">Flic 2 SDK</a> (flic2lib) for Bluetooth button communication. This SDK operates locally and does not transmit data to Flic's servers.</p>
+
+<h2>7. Children's Privacy</h2>
+<p>Tap Relay does not knowingly collect information from children under 13. The app does not collect personal information from any user.</p>
+
+<h2>8. Changes to This Policy</h2>
+<p>We may update this policy as the app evolves. Changes will be posted here with an updated date. Continued use of the app constitutes acceptance of the updated policy.</p>
+
+<h2>9. Contact</h2>
+<p>Questions about this privacy policy? Reach us at <a href="mailto:support@taprelay.app">support@taprelay.app</a>.</p>
+
+<footer>
+  &copy; 2026 Tap Relay. All rights reserved.
+</footer>
+
+</body>
+</html>

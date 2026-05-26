@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap Relay — Developer Support</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-dim: #1f6feb33;
+    --green: #3fb950;
+    --yellow: #d29922;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0 20px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  header p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 12px;
+    color: var(--accent);
+  }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+  p, li { font-size: 15px; margin-bottom: 12px; }
+  ul, ol { padding-left: 20px; margin-bottom: 16px; }
+  li { margin-bottom: 6px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+  }
+  p code, li code {
+    background: var(--accent-dim);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .key { color: var(--accent); }
+  .str { color: var(--green); }
+  .num { color: var(--yellow); }
+  .comment { color: var(--muted); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .badge-required { background: #f8514933; color: #f85149; }
+  .badge-optional { background: var(--accent-dim); color: var(--accent); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Developer Support</h1>
+  <p>Tap Relay &mdash; Webhook integration reference</p>
+</header>
+
+<h2>Overview</h2>
+<p>Tap Relay sends an HTTPS POST to your endpoint every time a Flic 2 button is pressed. Your server receives structured JSON with the event details and responds with a status code. This page documents everything you need to build a webhook receiver.</p>
+
+<h2>Webhook Payload</h2>
+<p>Each button press sends the following JSON body:</p>
+
+<pre><code>{
+  <span class="key">"client_id"</span>:    <span class="str">"site-alpha-01"</span>,
+  <span class="key">"auth_token"</span>:   <span class="str">"tok_abc123..."</span>,
+  <span class="key">"button_mac"</span>:   <span class="str">"AA:BB:CC:DD:EE:FF"</span>,
+  <span class="key">"click_type"</span>:   <span class="str">"single"</span>,
+  <span class="key">"pressed_at"</span>:   <span class="str">"2026-05-26T14:30:00Z"</span>,
+  <span class="key">"delivered_at"</span>: <span class="str">"2026-05-26T14:30:01Z"</span>,
+  <span class="key">"queued"</span>:       <span class="num">false</span>,
+  <span class="key">"age_seconds"</span>:  <span class="num">1.2</span>
+}</code></pre>
+
+<h3>Field Reference</h3>
+<table>
+  <thead>
+    <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>client_id</code></td>
+      <td>string</td>
+      <td>Identifier assigned during provisioning. Use this to route events to the correct handler.</td>
+    </tr>
+    <tr>
+      <td><code>auth_token</code></td>
+      <td>string</td>
+      <td>Bearer token for authenticating the request. Validate this on your server.</td>
+    </tr>
+    <tr>
+      <td><code>button_mac</code></td>
+      <td>string</td>
+      <td>Bluetooth MAC address of the Flic 2 button.</td>
+    </tr>
+    <tr>
+      <td><code>click_type</code></td>
+      <td>string</td>
+      <td>One of: <code>single</code>, <code>double</code>, or <code>hold</code>.</td>
+    </tr>
+    <tr>
+      <td><code>pressed_at</code></td>
+      <td>ISO 8601</td>
+      <td>When the button was physically pressed (device clock).</td>
+    </tr>
+    <tr>
+      <td><code>delivered_at</code></td>
+      <td>ISO 8601</td>
+      <td>When the webhook was dispatched from the device.</td>
+    </tr>
+    <tr>
+      <td><code>queued</code></td>
+      <td>boolean</td>
+      <td><code>true</code> if the event was queued due to no connectivity at press time.</td>
+    </tr>
+    <tr>
+      <td><code>age_seconds</code></td>
+      <td>number</td>
+      <td>Seconds between press and delivery. Useful for detecting stale events.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>HTTP Details</h2>
+
+<div class="card">
+  <h3>Request</h3>
+  <p style="margin-bottom:4px;"><strong>Method:</strong> POST</p>
+  <p style="margin-bottom:4px;"><strong>Content-Type:</strong> <code>application/json</code></p>
+  <p style="margin-bottom:0;"><strong>Authorization:</strong> <code>Bearer {auth_token}</code></p>
+</div>
+
+<div class="card">
+  <h3>Expected Response</h3>
+  <p style="margin-bottom:4px;">Return <strong>HTTP 200</strong> to acknowledge receipt.</p>
+  <p style="margin-bottom:0;">Any <code>2xx</code> status is treated as success. Non-<code>2xx</code> responses or timeouts will show as failed delivery in the app's event log.</p>
+</div>
+
+<h2>Minimal Receiver Examples</h2>
+
+<h3>Node.js (Express)</h3>
+<pre><code><span class="key">const</span> express = require(<span class="str">'express'</span>);
+<span class="key">const</span> app = express();
+app.use(express.json());
+
+app.post(<span class="str">'/webhook/taprelay'</span>, (req, res) => {
+  <span class="key">const</span> { auth_token, client_id, click_type } = req.body;
+
+  <span class="comment">// Validate token</span>
+  <span class="key">if</span> (auth_token !== process.env.EXPECTED_TOKEN) {
+    <span class="key">return</span> res.status(<span class="num">401</span>).json({ error: <span class="str">'unauthorized'</span> });
+  }
+
+  console.log(<span class="str">`[${client_id}] ${click_type} press`</span>);
+  res.status(<span class="num">200</span>).json({ received: <span class="num">true</span> });
+});
+
+app.listen(<span class="num">3000</span>);</code></pre>
+
+<h3>Python (Flask)</h3>
+<pre><code><span class="key">from</span> flask <span class="key">import</span> Flask, request, jsonify
+<span class="key">import</span> os
+
+app = Flask(__name__)
+
+@app.route(<span class="str">'/webhook/taprelay'</span>, methods=[<span class="str">'POST'</span>])
+<span class="key">def</span> handle_press():
+    data = request.json
+    <span class="key">if</span> data[<span class="str">'auth_token'</span>] != os.environ[<span class="str">'EXPECTED_TOKEN'</span>]:
+        <span class="key">return</span> jsonify(error=<span class="str">'unauthorized'</span>), <span class="num">401</span>
+
+    print(<span class="str">f"[{data['client_id']}] {data['click_type']} press"</span>)
+    <span class="key">return</span> jsonify(received=<span class="num">True</span>), <span class="num">200</span></code></pre>
+
+<h2>QR Provisioning Format</h2>
+<p>If you're generating QR codes to provision devices, the payload must be a JSON object with these fields:</p>
+
+<pre><code>{
+  <span class="key">"flic_mac"</span>:     <span class="str">"AA:BB:CC:DD:EE:FF"</span>,   <span class="comment">// target button</span>
+  <span class="key">"webhook_url"</span>:  <span class="str">"https://api.example.com/webhook/taprelay"</span>,
+  <span class="key">"auth_token"</span>:   <span class="str">"tok_abc123..."</span>,
+  <span class="key">"client_id"</span>:    <span class="str">"site-alpha-01"</span>,
+  <span class="key">"sig"</span>:          <span class="str">"hmac-sha256-hex..."</span>,  <span class="comment">// HMAC signature</span>
+  <span class="key">"exp"</span>:          <span class="num">1748300000</span>              <span class="comment">// expiry (Unix timestamp)</span>
+}</code></pre>
+
+<table>
+  <thead><tr><th>Field</th><th></th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><code>flic_mac</code></td><td><span class="badge badge-required">required</span></td><td>Colon-separated MAC of the target Flic 2</td></tr>
+    <tr><td><code>webhook_url</code></td><td><span class="badge badge-required">required</span></td><td>Must be HTTPS</td></tr>
+    <tr><td><code>auth_token</code></td><td><span class="badge badge-required">required</span></td><td>Bearer token for webhook auth</td></tr>
+    <tr><td><code>client_id</code></td><td><span class="badge badge-required">required</span></td><td>Unique identifier for this deployment</td></tr>
+    <tr><td><code>sig</code></td><td><span class="badge badge-required">required</span></td><td>HMAC-SHA256 of the payload fields</td></tr>
+    <tr><td><code>exp</code></td><td><span class="badge badge-optional">optional</span></td><td>QR expiration; app rejects if expired</td></tr>
+  </tbody>
+</table>
+
+<h2>Best Practices</h2>
+<ul>
+  <li><strong>Validate the auth token</strong> on every request. Treat it like a bearer token.</li>
+  <li><strong>Check <code>age_seconds</code></strong> to discard stale events if timeliness matters (e.g., reject events older than 60 seconds).</li>
+  <li><strong>Use <code>client_id</code></strong> to route events when managing multiple buttons or sites.</li>
+  <li><strong>Respond quickly.</strong> The app waits for your response. A fast 200 ensures the event log updates promptly.</li>
+  <li><strong>Idempotency:</strong> If you need it, use <code>pressed_at</code> + <code>button_mac</code> as a natural deduplication key.</li>
+  <li><strong>HTTPS only.</strong> The app enforces TLS. Self-signed certificates are not supported.</li>
+</ul>
+
+<h2>Rate Limits &amp; Behavior</h2>
+<ul>
+  <li>Events fire in real time &mdash; there is no batching</li>
+  <li>The Flic button hardware debounces presses, so duplicate events are rare</li>
+  <li>If connectivity is lost, events queue on-device and deliver when connectivity returns (marked <code>"queued": true</code>)</li>
+</ul>
+
+<h2>Need Help?</h2>
+<p>Integration questions or issues? Contact us at <a href="mailto:support@taprelay.app">support@taprelay.app</a>.</p>
+
+<footer>
+  &copy; 2026 Tap Relay. All rights reserved.
+  <div class="nav-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="help.html">User Help</a>
+  </div>
+</footer>
+
+</body>
+</html>
