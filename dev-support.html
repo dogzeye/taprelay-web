@@ -290,6 +290,13 @@ app = Flask(__name__)
   <li>If connectivity is lost, events queue on-device and deliver when connectivity returns (marked <code>"queued": true</code>)</li>
 </ul>
 
+<h2>Location Accuracy</h2>
+<div class="card">
+  <span class="badge" style="background:#d2992233;color:#d29922;">Important</span>
+  <p>The <code>lat</code>, <code>lng</code>, and <code>location_accuracy</code> fields reflect the device's <strong>last known location</strong>, not a live GPS fix. When the app is in the background, iOS does not continuously update location. If the user has moved significantly since the app was last in the foreground, the coordinates may be stale by minutes or miles.</p>
+  <p style="margin-bottom:0;"><strong>For safety-critical use cases</strong> (lone worker alerts, distress signals, check-ins where current position matters): do not rely solely on the webhook location. Use Apple <strong>Find My</strong> or a dedicated location-tracking service to obtain the user's real-time position. The webhook location is best treated as an approximate reference, not a ground truth.</p>
+</div>
+
 <h2>Need Help?</h2>
 <p>Integration questions or issues? Contact us at <a href="mailto:support@taprelay.app">support@taprelay.app</a>.</p>
 
